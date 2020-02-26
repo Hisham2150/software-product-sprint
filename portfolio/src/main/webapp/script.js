@@ -15,14 +15,18 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+function addRandomQuote() {
+  const random_quote =
+      ["Please note that we have added a consequence for failure. Any contact with the chamber floor will result in an 'unsatisfactory'  mark on your official testing record, followed by death. Good luck!", 
+      "You're doing very well. Please be advised that a noticeable taste of blood is not part of any test protocol but is an unintended side effect of the Aperture Science Material Emancipation Grill, which may, in semi-rare cases, emancipate dental fillings, crowns, tooth enamel, and teeth.", 
+      "What are you doing? Stop it! I-i-I-iiiiiiiiiiiiiiiiii... We are pleased that you made it through the final challenge where we pretended we were going to murder you. We are very, very happy for your success. We are throwing a party in honour of your tremendous success. Place the device on the ground, then lie on your stomach with your arms at your sides. A party associate will arrive shortly to collect you for your party. Make no further attempt to leave the testing area. Assume the party escort submission position or you will miss the party.", 
+      "Momentum, a function of mass and velocity, is conserved between portals. In layman's terms: speedy thing goes in, speedy thing comes out.",
+      "Spectacular. You appear to understand how a portal affects forward momentum, or to be more precise, how it does not."];
 
   // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  const quote = random_quote[Math.floor(Math.random() * random_quote.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  const quote_container = document.getElementById('quote-container');
+  quote_container.innerText = quote;
 }
