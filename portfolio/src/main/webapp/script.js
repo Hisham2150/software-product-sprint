@@ -31,17 +31,13 @@ function addRandomQuote() {
   quote_container.innerText = quote;
 }
 
-function fetchListData(){
+function fetchComments(){
     fetch("/data").then(response => response.text()).then((data) => {
         
-        const data_container = document.getElementById("list-data-container");
-        data_container.innerText = data;
-
+        const commentListElement = document.getElementById('comments-list');
+        tasks.forEach((task) => {
+            taskListElement.appendChild(createTaskElement(task));
+        })
     });
 }
 
-function createListElement(text) {
-  const liElement = document.createElement('li');
-  liElement.innerText = text;
-  return liElement;
-}

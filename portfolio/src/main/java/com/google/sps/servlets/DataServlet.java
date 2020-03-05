@@ -21,40 +21,69 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.gson.Gson;
+import com.google.sps.data.Comment;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
     private List<String> comments;
+    private DatastoreService datastore;
 
     @Override
     public void init(){
+        
         comments = new ArrayList<>();
+        datastore =  DatastoreServiceFactory.getDatastoreService();
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
      
-        response.setContentType("text/html;");
-    }
+        PreparedQuery commentsQuery = getComments("comment");
+        List<Comment> commentsList = new ArrayList<Comment>();
 
-    public void printComments(HttpServletResponse response) throws IOException{
-        for(String comment: comments){
-            response.getWriter().println(comment);
+        for(Entity commentEntity : commentsQuery.asIterable()){
+            String body = (String) commentEntity.getProperty("body");
+            long timestamp = (long) commentEntity.getProperty("timestamp");
+            Comment comment = new Comment(body,timestamp);
+            commentsList.add(comment);
         }
+
+        Gson gson = new Gson();
+        response.setContentType("application/json;");
+        response.getWriter().println(gson.toJson(commentsList));
     }
 
+   
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        String text = getParameter(request, "comment-input");
-        addComment(text);
-        printComments(response);
+       
+        String commentBody = getParameter(request, "comment-input");
+        long timestamp = System.currentTimeMillis();
+        Entity commentEntity = createCommentEntity("comment", commentBody, timestamp);
+        storeComment(commentEntity);
+
+        response.setContentType("html/text");
+        response.sendRedirect("/data");
+    }
+
+    public PreparedQuery getComments(String entityName){
+
+        Query query = new Query(entityName).addSort("timestamp", SortDirection.DESCENDING);
+        return datastore.prepare(query);
     }
 
     public String getParameter(HttpServletRequest request, String name){
-
+       
         String value = request.getParameter(name);
-
+        
         if(value == null){
           return "";
         }
@@ -62,9 +91,31 @@ public class DataServlet extends HttpServlet {
         return value;
     }
 
-    public void addComment(String text){
+    public Entity createCommentEntity(String entityName, String body, long timestamp){
+
+        Entity commentEntity = new Entity(entityName);
+        commentEntity.setProperty("body", body);
+        commentEntity.setProperty("timestamp", timestamp);
+        return commentEntity;
+    }
+
+
+    public void storeComment(Entity comment){
+    
+        datastore.put(comment);
+    }
+
+    //Adding to array
+    public void addCommentArray(String text){
         if(text != ""){
           comments.add(text);
+        }
+    }
+
+    //Printing comments from array
+    public void printCommentsArray(HttpServletResponse response) throws IOException{
+        for(String comment: comments){
+            response.getWriter().println(comment);
         }
     }
 }
