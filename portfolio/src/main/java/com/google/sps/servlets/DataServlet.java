@@ -26,42 +26,45 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-    private List<String> hardCodedStrings;
+    private List<String> comments;
 
     @Override
     public void init(){
-        hardCodedStrings = new ArrayList<>();
-        hardCodedStrings.add("First hard coded string");
-        hardCodedStrings.add("Second hard coded string");
-        hardCodedStrings.add("Third hard coded string");
+        comments = new ArrayList<>();
     }
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // response.setContentType("text/html;");
-    // response.getWriter().println("<h1>Hello Hisham!</h1>");
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+     
+        response.setContentType("text/html;");
+    }
 
+    public void printComments(HttpServletResponse response) throws IOException{
+        for(String comment: comments){
+            response.getWriter().println(comment);
+        }
+    }
 
-    String json = "[";
-    json += "{";
-    json += "\"Data\": ";
-    json += "\"" + hardCodedStrings.get(0) + "\"";
-    json += "}";
-    json += ",";
-    json += "{";
-    json += "\"Data\": ";
-    json += "\"" + hardCodedStrings.get(1) + "\"";
-    json += "}";
-    json += ",";
-    json += "{";
-    json += "\"Data\": ";
-    json += "\"" + hardCodedStrings.get(2) + "\"";
-    json += "}";
-    json += "]";
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        String text = getParameter(request, "comment-input");
+        addComment(text);
+        printComments(response);
+    }
 
-    response.setContentType("application/json");
-    response.getWriter().println(json);
+    public String getParameter(HttpServletRequest request, String name){
 
+        String value = request.getParameter(name);
 
-  }
+        if(value == null){
+          return "";
+        }
+
+        return value;
+    }
+
+    public void addComment(String text){
+        if(text != ""){
+          comments.add(text);
+        }
+    }
 }

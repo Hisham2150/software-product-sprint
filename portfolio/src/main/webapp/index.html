@@ -22,9 +22,10 @@
       <button onclick="addRandomQuote()">Random Quote</button>
       <div id="quote-container"></div>
     </div>
-    <div id="list-data">
-        <button onclick="fetchListData()">Get list data</button>
-        <div id="list-data-container"></div>
-    </div>
+    <div id="comments">
+        <form action="/data" method="POST">
+        <p>Add commments</p>
+        <textarea name="comment-input"></textarea>
+      <input type="submit" />
   </body>
 </html>
