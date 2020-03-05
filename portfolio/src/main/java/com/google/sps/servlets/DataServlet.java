@@ -15,6 +15,8 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,9 +26,42 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+    private List<String> hardCodedStrings;
+
+    @Override
+    public void init(){
+        hardCodedStrings = new ArrayList<>();
+        hardCodedStrings.add("First hard coded string");
+        hardCodedStrings.add("Second hard coded string");
+        hardCodedStrings.add("Third hard coded string");
+    }
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Hisham!</h1>");
+    // response.setContentType("text/html;");
+    // response.getWriter().println("<h1>Hello Hisham!</h1>");
+
+
+    String json = "[";
+    json += "{";
+    json += "\"Data\": ";
+    json += "\"" + hardCodedStrings.get(0) + "\"";
+    json += "}";
+    json += ",";
+    json += "{";
+    json += "\"Data\": ";
+    json += "\"" + hardCodedStrings.get(1) + "\"";
+    json += "}";
+    json += ",";
+    json += "{";
+    json += "\"Data\": ";
+    json += "\"" + hardCodedStrings.get(2) + "\"";
+    json += "}";
+    json += "]";
+
+    response.setContentType("application/json");
+    response.getWriter().println(json);
+
+
   }
 }

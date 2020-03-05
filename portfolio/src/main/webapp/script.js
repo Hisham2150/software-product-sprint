@@ -30,3 +30,18 @@ function addRandomQuote() {
   const quote_container = document.getElementById('quote-container');
   quote_container.innerText = quote;
 }
+
+function fetchListData(){
+    fetch("/data").then(response => response.text()).then((data) => {
+        
+        const data_container = document.getElementById("list-data-container");
+        data_container.innerText = data;
+
+    });
+}
+
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}

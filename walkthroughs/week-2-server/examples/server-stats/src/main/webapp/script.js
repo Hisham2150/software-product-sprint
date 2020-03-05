@@ -30,6 +30,7 @@ function getServerStats() {
         createListElement('Max memory: ' + stats.maxMemory));
     statsListElement.appendChild(
         createListElement('Used memory: ' + stats.usedMemory));
+
   });
 }
 
