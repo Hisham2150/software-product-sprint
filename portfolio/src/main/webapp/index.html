@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="fetchComments()">
     <div id="content">
       <h1>Hisham's Portfolio</h1>
       <div>
@@ -21,6 +21,16 @@
       <p>Click here to get a random quote from one of my favourite game series, Portal:</p>
       <button onclick="addRandomQuote()">Random Quote</button>
       <div id="quote-container"></div>
+    </div>
+    <div id="comment-text-area">
+        <form action="/new-comment" method="POST">
+        <p>Add a commment and check its sentiment score! From [-1,1] with (-ve = negative sentiment, +ve = positive setiment)</p>
+        <input name="comment-input"/>
+        <button>Submit!</button>
+        </form>
+    </div>
+    <div id="comments-container">
+        <ul id="comments-list"></ul>
     </div>
   </body>
 </html>

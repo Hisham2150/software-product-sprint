@@ -30,3 +30,41 @@ function addRandomQuote() {
   const quote_container = document.getElementById('quote-container');
   quote_container.innerText = quote;
 }
+
+function fetchComments(){
+    fetch("/list-comments").then(response => response.json()).then((comments) => {
+        
+        const commentListElement = document.getElementById('comments-list');
+        comments.forEach((comment) => {
+            commentListElement.appendChild(createCommentElement(comment));
+        })
+    });
+}
+
+function createCommentElement(comment){
+    const commentElement = document.createElement('li');
+    commentElement.className = 'comment';
+
+    const bodyElement = document.createElement('span');
+    bodyElement.innerText = comment.body;
+
+    const sentimentElement = document.createElement('span');
+    sentimentElement.innerText = " => Has a sentiment score: " + comment.sentimentScore;
+
+    commentElement.appendChild(bodyElement);
+    commentElement.appendChild(sentimentElement);
+    return commentElement;
+}
+
+// function storeComment(){
+//     fetch('/data', {
+//   method: 'POST',
+//   headers: {
+//     'Accept': 'application/json, text/plain, */*',
+//     'Content-Type': 'application/json'
+//   },
+//   body: JSON.stringify({a: 7, str: 'Some string: &=&'})
+// }).then(res=>res.json())
+//   .then(res => console.log(res));
+// }
+
